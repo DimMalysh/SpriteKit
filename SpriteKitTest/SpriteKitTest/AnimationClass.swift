@@ -19,4 +19,28 @@ class AnimationClass {
         sprite.run(SKAction.repeatForever(SKAction.sequence([SKAction.colorize(with: SKColor.red, colorBlendFactor: 1.0, duration: duration), SKAction.colorize(withColorBlendFactor: 0.0, duration: duration)])))
     }
     
+    func shakeAndFlashAnimation(view: SKView) {
+        //White flash
+        let tempView = UIView(frame: view.frame)
+        tempView.backgroundColor = UIColor.white
+        view.addSubview(tempView)
+        
+        UIView.animate(withDuration: 1, delay: 0.0, options: .curveEaseInOut, animations: {
+            tempView.alpha = 0.0
+        }) { (done) in
+            tempView.removeFromSuperview()
+        }
+        
+        //Shake animation
+        let shake = CAKeyframeAnimation(keyPath: "transform")
+        shake.values = [
+            NSValue(caTransform3D: CATransform3DMakeTranslation(-15.0, 5.0, 5.0)),
+            NSValue(caTransform3D: CATransform3DMakeTranslation(15.0, 5.0, 5.0))
+        ]
+        shake.autoreverses = true
+        shake.repeatCount = 2.0
+        shake.duration = 7/100
+        
+        view.layer.add(shake, forKey: nil)
+    }
 }

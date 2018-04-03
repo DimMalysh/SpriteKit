@@ -12,6 +12,41 @@ import SpriteKit
 extension GameScene {
 
     func didBegin(_ contact: SKPhysicsContact) {
+        
+        if contact.bodyA.categoryBitMask == objectGroup || contact.bodyB.categoryBitMask == objectGroup {
+            hero.physicsBody?.velocity = CGVector(dx: 0.0, dy: 0.0)
+            
+            animations.shakeAndFlashAnimation(view: self.view!)
+            
+            if isSound == true {
+                run(electricGateCreatePreload)
+            }
+            
+            hero.physicsBody?.allowsRotation = false
+            
+            heroEmitterObject.removeAllChildren()
+            coinObject.removeAllChildren()
+            redCoinObject.removeAllChildren()
+            movingObject.removeAllChildren()
+            groundObject.removeAllChildren()
+            movingObject.removeAllChildren()
+            
+            stopGameObjects()
+            invalidateTimers()
+            
+            //Dying hero
+            heroDeathTexturesArray = [SKTexture(imageNamed: "Dead0.png"), SKTexture(imageNamed: "Dead1.png"), SKTexture(imageNamed: "Dead2.png"), SKTexture(imageNamed: "Dead3.png"), SKTexture(imageNamed: "Dead4.png"), SKTexture(imageNamed: "Dead5.png"), SKTexture(imageNamed: "Dead6.png")]
+            let heroDeathAnimation = SKAction.animate(with: heroDeathTexturesArray, timePerFrame: 0.2)
+            hero.run(heroDeathAnimation)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                self.scene?.isPaused = true
+                self.heroObject.removeAllChildren()
+                
+                self.gameViewControllerBridge.reloadGameButton.isHidden = false
+            })
+        }
+        
         if contact.bodyA.categoryBitMask == groundGroup || contact.bodyB.categoryBitMask == groundGroup {
             heroEmitter.isHidden = true
             

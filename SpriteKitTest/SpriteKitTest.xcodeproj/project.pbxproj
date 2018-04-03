@@ -38,6 +38,20 @@
 		04763E952073C93A007A9F3D /* pickCoin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 04763E942073C93A007A9F3D /* pickCoin.mp3 */; };
 		04763E972073C987007A9F3D /* SKTAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04763E962073C987007A9F3D /* SKTAudio.swift */; };
 		04763E9C2073CB64007A9F3D /* AnimationClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04763E9B2073CB64007A9F3D /* AnimationClass.swift */; };
+		04763EA12073D544007A9F3D /* ElectricGate01.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763E9D2073D544007A9F3D /* ElectricGate01.png */; };
+		04763EA22073D544007A9F3D /* ElectricGate02.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763E9E2073D544007A9F3D /* ElectricGate02.png */; };
+		04763EA32073D544007A9F3D /* ElectricGate03.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763E9F2073D544007A9F3D /* ElectricGate03.png */; };
+		04763EA42073D544007A9F3D /* ElectricGate04.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EA02073D544007A9F3D /* ElectricGate04.png */; };
+		04763EAC2073D5CD007A9F3D /* Dead0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EA52073D5CD007A9F3D /* Dead0.png */; };
+		04763EAD2073D5CD007A9F3D /* Dead1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EA62073D5CD007A9F3D /* Dead1.png */; };
+		04763EAE2073D5CD007A9F3D /* Dead2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EA72073D5CD007A9F3D /* Dead2.png */; };
+		04763EAF2073D5CD007A9F3D /* Dead3.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EA82073D5CD007A9F3D /* Dead3.png */; };
+		04763EB02073D5CD007A9F3D /* Dead4.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EA92073D5CD007A9F3D /* Dead4.png */; };
+		04763EB12073D5CD007A9F3D /* Dead5.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EAA2073D5CD007A9F3D /* Dead5.png */; };
+		04763EB22073D5CD007A9F3D /* Dead6.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EAB2073D5CD007A9F3D /* Dead6.png */; };
+		04763EB92073D663007A9F3D /* electricCreate.wav in Resources */ = {isa = PBXBuildFile; fileRef = 04763EB72073D663007A9F3D /* electricCreate.wav */; };
+		04763EBA2073D663007A9F3D /* electricDead.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 04763EB82073D663007A9F3D /* electricDead.mp3 */; };
+		04763EBC2073EC25007A9F3D /* reloadButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763EBB2073EC25007A9F3D /* reloadButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +88,20 @@
 		04763E942073C93A007A9F3D /* pickCoin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickCoin.mp3; sourceTree = "<group>"; };
 		04763E962073C987007A9F3D /* SKTAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTAudio.swift; sourceTree = "<group>"; };
 		04763E9B2073CB64007A9F3D /* AnimationClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationClass.swift; sourceTree = "<group>"; };
+		04763E9D2073D544007A9F3D /* ElectricGate01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ElectricGate01.png; sourceTree = "<group>"; };
+		04763E9E2073D544007A9F3D /* ElectricGate02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ElectricGate02.png; sourceTree = "<group>"; };
+		04763E9F2073D544007A9F3D /* ElectricGate03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ElectricGate03.png; sourceTree = "<group>"; };
+		04763EA02073D544007A9F3D /* ElectricGate04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ElectricGate04.png; sourceTree = "<group>"; };
+		04763EA52073D5CD007A9F3D /* Dead0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dead0.png; sourceTree = "<group>"; };
+		04763EA62073D5CD007A9F3D /* Dead1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dead1.png; sourceTree = "<group>"; };
+		04763EA72073D5CD007A9F3D /* Dead2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dead2.png; sourceTree = "<group>"; };
+		04763EA82073D5CD007A9F3D /* Dead3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dead3.png; sourceTree = "<group>"; };
+		04763EA92073D5CD007A9F3D /* Dead4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dead4.png; sourceTree = "<group>"; };
+		04763EAA2073D5CD007A9F3D /* Dead5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dead5.png; sourceTree = "<group>"; };
+		04763EAB2073D5CD007A9F3D /* Dead6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dead6.png; sourceTree = "<group>"; };
+		04763EB72073D663007A9F3D /* electricCreate.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = electricCreate.wav; sourceTree = "<group>"; };
+		04763EB82073D663007A9F3D /* electricDead.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = electricDead.mp3; sourceTree = "<group>"; };
+		04763EBB2073EC25007A9F3D /* reloadButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reloadButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +134,7 @@
 		04763E5020737B57007A9F3D /* SpriteKitTest */ = {
 			isa = PBXGroup;
 			children = (
+				04763EBB2073EC25007A9F3D /* reloadButton.png */,
 				04763E5320737B57007A9F3D /* GameScene.sks */,
 				04763E5120737B57007A9F3D /* AppDelegate.swift */,
 				04763E5720737B57007A9F3D /* GameScene.swift */,
@@ -144,6 +173,17 @@
 				04763E8C2073BB4B007A9F3D /* Coin1.png */,
 				04763E8D2073BB4B007A9F3D /* Coin2.png */,
 				04763E8E2073BB4B007A9F3D /* Coin3.png */,
+				04763E9D2073D544007A9F3D /* ElectricGate01.png */,
+				04763E9E2073D544007A9F3D /* ElectricGate02.png */,
+				04763E9F2073D544007A9F3D /* ElectricGate03.png */,
+				04763EA02073D544007A9F3D /* ElectricGate04.png */,
+				04763EA52073D5CD007A9F3D /* Dead0.png */,
+				04763EA62073D5CD007A9F3D /* Dead1.png */,
+				04763EA72073D5CD007A9F3D /* Dead2.png */,
+				04763EA82073D5CD007A9F3D /* Dead3.png */,
+				04763EA92073D5CD007A9F3D /* Dead4.png */,
+				04763EAA2073D5CD007A9F3D /* Dead5.png */,
+				04763EAB2073D5CD007A9F3D /* Dead6.png */,
 			);
 			path = scene_atlas;
 			sourceTree = "<group>";
@@ -161,6 +201,8 @@
 		04763E992073C9C0007A9F3D /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				04763EB72073D663007A9F3D /* electricCreate.wav */,
+				04763EB82073D663007A9F3D /* electricDead.mp3 */,
 				04763E942073C93A007A9F3D /* pickCoin.mp3 */,
 			);
 			name = Sounds;
@@ -235,27 +277,41 @@
 			buildActionMask = 2147483647;
 			files = (
 				04763E7320739A12007A9F3D /* Fly4.png in Resources */,
+				04763EAF2073D5CD007A9F3D /* Dead3.png in Resources */,
 				04763E5D20737B57007A9F3D /* Main.storyboard in Resources */,
+				04763EBC2073EC25007A9F3D /* reloadButton.png in Resources */,
+				04763EA12073D544007A9F3D /* ElectricGate01.png in Resources */,
 				04763E872073A974007A9F3D /* engine.sks in Resources */,
 				04763E7C20739A1F007A9F3D /* Run1.png in Resources */,
 				04763E922073BB4B007A9F3D /* Coin2.png in Resources */,
+				04763EBA2073D663007A9F3D /* electricDead.mp3 in Resources */,
 				04763E8F2073BB4B007A9F3D /* coin.jpg in Resources */,
 				04763E7B20739A1F007A9F3D /* Run0.png in Resources */,
+				04763EA22073D544007A9F3D /* ElectricGate02.png in Resources */,
 				04763E952073C93A007A9F3D /* pickCoin.mp3 in Resources */,
 				04763E7220739A12007A9F3D /* Fly3.png in Resources */,
 				04763E5420737B57007A9F3D /* GameScene.sks in Resources */,
 				04763E8120739A1F007A9F3D /* Run6.png in Resources */,
+				04763EB12073D5CD007A9F3D /* Dead5.png in Resources */,
 				04763E7D20739A1F007A9F3D /* Run2.png in Resources */,
+				04763EAE2073D5CD007A9F3D /* Dead2.png in Resources */,
+				04763EA32073D544007A9F3D /* ElectricGate03.png in Resources */,
+				04763EB92073D663007A9F3D /* electricCreate.wav in Resources */,
 				04763E7120739A12007A9F3D /* Fly2.png in Resources */,
 				04763E6F20739A12007A9F3D /* Fly0.png in Resources */,
 				04763E7020739A12007A9F3D /* Fly1.png in Resources */,
 				04763E5F20737B57007A9F3D /* Assets.xcassets in Resources */,
+				04763EB22073D5CD007A9F3D /* Dead6.png in Resources */,
 				04763E912073BB4B007A9F3D /* Coin1.png in Resources */,
+				04763EA42073D544007A9F3D /* ElectricGate04.png in Resources */,
 				04763E7E20739A1F007A9F3D /* Run3.png in Resources */,
+				04763EAC2073D5CD007A9F3D /* Dead0.png in Resources */,
+				04763EAD2073D5CD007A9F3D /* Dead1.png in Resources */,
 				04763E8020739A1F007A9F3D /* Run5.png in Resources */,
 				04763E7F20739A1F007A9F3D /* Run4.png in Resources */,
 				04763E6220737B57007A9F3D /* LaunchScreen.storyboard in Resources */,
 				04763E932073BB4B007A9F3D /* Coin3.png in Resources */,
+				04763EB02073D5CD007A9F3D /* Dead4.png in Resources */,
 				04763E902073BB4B007A9F3D /* Coin0.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

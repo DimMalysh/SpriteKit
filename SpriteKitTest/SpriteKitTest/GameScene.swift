@@ -16,15 +16,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //Variables
     var isSound = true
+    var gameViewControllerBridge: GameViewController!
+    var moveElectricGateByY = SKAction()
     
     //Textures
-    var bgTexture: SKTexture!
+    var bgTex: SKTexture!
     var flyHeroTex: SKTexture!
     var runHeroTex: SKTexture!
-    var coinTexture: SKTexture!
-    var redCoinTexture: SKTexture!
+    var deadHeroTex: SKTexture!
+    var coinTex: SKTexture!
+    var redCoinTex: SKTexture!
     var coinHeroTex: SKTexture!
     var redCoinHeroTex: SKTexture!
+    var electricGateTex: SKTexture!
     
     //Emitters Node
     var heroEmitter = SKEmitterNode()
@@ -36,11 +40,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var hero = SKSpriteNode()
     var coin = SKSpriteNode()
     var redCoin = SKSpriteNode()
+    var electricGate = SKSpriteNode()
     
     //Sprite Objects
     var bgObject = SKNode()
     var groundObject = SKNode()
-    var skyObject = SKNode()
+    var movingObject = SKNode()
     var heroObject = SKNode()
     var heroEmitterObject = SKNode()
     var coinObject = SKNode()
@@ -51,32 +56,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var groundGroup: UInt32 = 0x1 << 2
     var coinGroup: UInt32 = 0x1 << 3
     var redCoinGroup: UInt32 = 0x1 << 4
+    var objectGroup: UInt32 = 0x1 << 5
     
     //Array of Textures for animateWithTextures
     var heroFlyTexturesArray = [SKTexture]()
     var heroRunTexturesArray = [SKTexture]()
+    var heroDeathTexturesArray = [SKTexture]()
     var coinTexturesArray = [SKTexture]()
+    var electricGateTexturesArray = [SKTexture]()
     
     //Timers
     var timerAddCoin = Timer()
     var timerAddRedCoin = Timer()
+    var timerAddElectricGate = Timer()
     
     //Sounds
     var pickCoinPreload = SKAction()
+    var electricGateCreatePreload = SKAction()
+    var electricGateDeadPreload = SKAction()
     
     override func didMove(to view: SKView) {
         //Backgroung texture
-        bgTexture = SKTexture(imageNamed: "bg01.png")
+        bgTex = SKTexture(imageNamed: "bg01.png")
         
         //Hero textures
         flyHeroTex = SKTexture(imageNamed: "Fly0.png")
         runHeroTex = SKTexture(imageNamed: "Run0.png")
         
         //Coin textures
-        coinTexture = SKTexture(imageNamed: "coin.jpg")
-        redCoinTexture = SKTexture(imageNamed: "coin.jpg")
+        coinTex = SKTexture(imageNamed: "coin.jpg")
+        redCoinTex = SKTexture(imageNamed: "coin.jpg")
         coinHeroTex = SKTexture(imageNamed: "coin0.png")
         redCoinHeroTex = SKTexture(imageNamed: "coin0.png")
+        
+        //ElectricGate texture
+        electricGateTex = SKTexture(imageNamed: "ElectricGate01.png")
         
         //Emitters
         heroEmitter = SKEmitterNode(fileNamed: "engine.sks")!
@@ -84,9 +98,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.contactDelegate = self
         
         createObjects()
+        
+        createBg()
         createGame()
         
         pickCoinPreload = SKAction.playSoundFileNamed("pickCoin.mp3", waitForCompletion: false)
+        electricGateCreatePreload = SKAction.playSoundFileNamed("electricCreate.wav", waitForCompletion: false)
+        electricGateDeadPreload = SKAction.playSoundFileNamed("electricDead.mp3", waitForCompletion: false)
     }
     
     override func didFinishUpdate() {
@@ -96,7 +114,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createObjects() {
         self.addChild(bgObject)
         self.addChild(groundObject)
-        self.addChild(skyObject)
+        self.addChild(movingObject)
         self.addChild(heroObject)
         self.addChild(heroEmitterObject)
         self.addChild(coinObject)
@@ -104,27 +122,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createGame() {
-        createBg()
         createGround()
         createSky()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
             self.createHero()
             self.createHeroEmitter()
             self.startTimers()
+            self.addElectricGate()
         }
+        
+        gameViewControllerBridge.reloadGameButton.isHidden = true
     }
     
     func createBg() {
-        bgTexture = SKTexture(imageNamed: "bg01.png")
+        bgTex = SKTexture(imageNamed: "bg01.png")
         
-        let moveBg = SKAction.moveBy(x: -bgTexture.size().width, y: 0.0, duration: 3.0)
-        let replaceBg = SKAction.moveBy(x: bgTexture.size().width, y: 0.0, duration: 0.0)
+        let moveBg = SKAction.moveBy(x: -bgTex.size().width, y: 0.0, duration: 3.0)
+        let replaceBg = SKAction.moveBy(x: bgTex.size().width, y: 0.0, duration: 0.0)
         let moveBgForever = SKAction.repeatForever(SKAction.sequence([moveBg, replaceBg]))
         
         for i in 0..<3 {
-            bg = SKSpriteNode(texture: bgTexture)
-            bg.position = CGPoint(x: size.width / 4 + bgTexture.size().width * CGFloat(i), y: size.height / 2.0)
+            bg = SKSpriteNode(texture: bgTex)
+            bg.position = CGPoint(x: size.width / 4 + bgTex.size().width * CGFloat(i), y: size.height / 2.0)
             bg.size.height = self.frame.height
             bg.run(moveBgForever)
             bg.zPosition = -1
@@ -155,7 +175,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         sky.zPosition = 1
         
-        skyObject.addChild(sky)
+        movingObject.addChild(sky)
     }
     
     func addHero(_ heroNode: SKSpriteNode, atPosition position: CGPoint) {
@@ -173,7 +193,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         hero.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: hero.size.width - 40, height: hero.size.height - 30))
         hero.physicsBody?.categoryBitMask = heroGroup
-        hero.physicsBody?.contactTestBitMask = groundGroup | coinGroup | redCoinGroup
+        hero.physicsBody?.contactTestBitMask = groundGroup | coinGroup | redCoinGroup | objectGroup
         hero.physicsBody?.collisionBitMask = groundGroup
         hero.physicsBody?.isDynamic = true
         hero.physicsBody?.allowsRotation = false
@@ -194,7 +214,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func addCoin() {
-        coin = SKSpriteNode(texture: coinTexture)
+        coin = SKSpriteNode(texture: coinTex)
         
         //Twisting coin
         coinTexturesArray = [SKTexture(imageNamed: "Coin0.png"), SKTexture(imageNamed: "Coin1.png"), SKTexture(imageNamed: "Coin2.png"), SKTexture(imageNamed: "Coin3.png")]
@@ -210,7 +230,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let movementAmount = arc4random() % UInt32(self.frame.height / 2)
         let pipeOffset = CGFloat(movementAmount) - self.frame.size.height / 4
-        coin.position = CGPoint(x: self.size.width + 50, y: 0 + coinTexture.size().height + 90 + pipeOffset)
+        coin.position = CGPoint(x: self.size.width + 50, y: 0 + coinTex.size().height + 90 + pipeOffset)
         
         let moveCoin = SKAction.moveBy(x: -self.frame.size.width * 2, y: 0.0, duration: 5.0)
         let removeAction = SKAction.removeFromParent()
@@ -225,7 +245,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func addRedCoin() {
-        redCoin = SKSpriteNode(texture: redCoinTexture)
+        redCoin = SKSpriteNode(texture: redCoinTex)
         
         //Twisting red coin
         coinTexturesArray = [SKTexture(imageNamed: "Coin0.png"), SKTexture(imageNamed: "Coin1.png"), SKTexture(imageNamed: "Coin2.png"), SKTexture(imageNamed: "Coin3.png")]
@@ -241,7 +261,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let movementAmount = arc4random() % UInt32(self.frame.height / 2)
         let pipeOffset = CGFloat(movementAmount) - self.frame.size.height / 4
-        redCoin.position = CGPoint(x: self.size.width + 50, y: 0 + redCoinTexture.size().height + 90 + pipeOffset)
+        redCoin.position = CGPoint(x: self.size.width + 50, y: 0 + redCoinTex.size().height + 90 + pipeOffset)
         
         let moveRedCoin = SKAction.moveBy(x: -self.frame.size.width * 2, y: 0.0, duration: 5.0)
         let removeAction = SKAction.removeFromParent()
@@ -260,11 +280,121 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
+    func addElectricGate() {
+        if isSound == true {
+            run(electricGateCreatePreload)
+        }
+        
+        electricGate = SKSpriteNode(texture: electricGateTex)
+        
+        //Activated electric gate
+        electricGateTexturesArray = [SKTexture(imageNamed: "ElectricGate01.png"), SKTexture(imageNamed: "ElectricGate02.png"), SKTexture(imageNamed: "ElectricGate03.png"), SKTexture(imageNamed: "ElectricGate04.png")]
+        let electricGateAnimation = SKAction.animate(with: electricGateTexturesArray, timePerFrame: 0.1)
+        let activeElectricGate = SKAction.repeatForever(electricGateAnimation)
+        
+        electricGate.run(activeElectricGate)
+        
+        let randomPosition = arc4random() % 2
+        let movementAmount = arc4random() % UInt32(self.frame.size.height / 5)
+        let pipeOffset = self.frame.size.height / 4 + 30 - CGFloat(movementAmount)
+        
+        if randomPosition == 0 {
+            electricGate.position = CGPoint(x: self.size.width + 50, y: 0 + electricGateTex.size().height / 2 + 90 + pipeOffset)
+            electricGate.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: electricGate.size.width - 40, height: electricGate.size.height - 20))
+            
+        } else {
+            electricGate.position = CGPoint(x: self.size.width + 50, y: self.frame.size.height - electricGateTex.size().height / 2 - 90 - pipeOffset)
+            electricGate.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: electricGate.size.width - 40, height: electricGate.size.height - 20))
+        }
+        
+        //Rotation electric gate
+        electricGate.run(SKAction.repeatForever(SKAction.sequence([SKAction.run({
+            self.electricGate.run(SKAction.rotate(byAngle: CGFloat(M_PI * 2), duration: 0.5))
+        }), SKAction.wait(forDuration: 20.0)])))
+        
+        //Move electric gate
+        let moveAction = SKAction.moveBy(x: -self.frame.width - 300, y: 0.0, duration: 6.0)
+        electricGate.run(moveAction)
+        
+        //Scale electric gate
+        var scaleValue: CGFloat = 0.3
+        
+        let scaleRandom = arc4random() % UInt32(5)
+        switch scaleRandom {
+        case 0: scaleValue = 1.0
+        case 1: scaleValue = 0.9
+        case 2: scaleValue = 0.6
+        case 3: scaleValue = 0.8
+        case 4: scaleValue = 0.7
+        default: break
+        }
+        
+        electricGate.setScale(scaleValue)
+        
+        let movementRandom = arc4random() % 9
+        switch movementRandom {
+        case 0: moveElectricGateByY = SKAction.moveTo(y: self.frame.height / 2 + 220, duration: 4.0)
+        case 1: moveElectricGateByY = SKAction.moveTo(y: self.frame.height / 2 - 220, duration: 5.0)
+        case 2: moveElectricGateByY = SKAction.moveTo(y: self.frame.height / 2 - 150, duration: 4.0)
+        case 3: moveElectricGateByY = SKAction.moveTo(y: self.frame.height / 2 + 150, duration: 5.0)
+        case 4: moveElectricGateByY = SKAction.moveTo(y: self.frame.height / 2 + 50, duration: 4.0)
+        case 5: moveElectricGateByY = SKAction.moveTo(y: self.frame.height / 2 - 50, duration: 5.0)
+        default: moveElectricGateByY = SKAction.moveTo(y: self.frame.height / 2, duration: 4.0)
+        }
+        
+        electricGate.run(moveElectricGateByY)
+        
+        electricGate.physicsBody?.restitution = 0
+        electricGate.physicsBody?.isDynamic = false
+        electricGate.physicsBody?.categoryBitMask = objectGroup
+        electricGate.zPosition = 1
+        
+        movingObject.addChild(electricGate)
+    }
+    
     func startTimers() {
         timerAddCoin.invalidate()
         timerAddRedCoin.invalidate()
+        timerAddElectricGate.invalidate()
         
         timerAddCoin = Timer.scheduledTimer(timeInterval: 2.64, target: self, selector: #selector(GameScene.addCoin), userInfo: nil, repeats: true)
         timerAddRedCoin = Timer.scheduledTimer(timeInterval: 8.246, target: self, selector: #selector(GameScene.addRedCoin), userInfo: nil, repeats: true)
+        timerAddElectricGate = Timer.scheduledTimer(timeInterval: 5.234, target: self, selector: #selector(GameScene.addElectricGate), userInfo: nil, repeats: true)
+    }
+    
+    func stopGameObjects() {
+        coinObject.speed = 0.0
+        redCoinObject.speed = 0.0
+        movingObject.speed = 0.0
+        heroObject.speed = 0.0
+    }
+    
+    func startGameObjects() {
+        coinObject.speed = 1.0
+        heroObject.speed = 1.0
+        movingObject.speed = 1.0
+        self.speed = 1.0
+    }
+    
+    func invalidateTimers() {
+        timerAddCoin.invalidate()
+        timerAddRedCoin.invalidate()
+        timerAddElectricGate.invalidate()
+    }
+    
+    func reloadGame() {
+        coinObject.removeAllChildren()
+        redCoinObject.removeAllChildren()
+        
+        scene?.isPaused = false
+        
+        movingObject.removeAllChildren()
+        heroObject.removeAllChildren()
+        
+        startGameObjects()
+        createGame()
+        
+        invalidateTimers()
+        startTimers()
     }
 }

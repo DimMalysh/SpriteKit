@@ -12,24 +12,20 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+    var scene = GameScene(size: CGSize(width: 1024, height: 768))
+    
+    @IBOutlet weak var reloadGameButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let view = self.view as! SKView? {
-            // Load the SKScene from 'GameScene.sks'
-            let scene = GameScene(size: CGSize(width: 1024, height: 768))
-            // Set the scale mode to scale to fit the window
-            scene.scaleMode = .aspectFill
-            
-            // Present the scene
-            view.presentScene(scene)
-            
-            view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
-            view.showsPhysics = true
-        }
+        scene.scaleMode = .aspectFill
+        scene.gameViewControllerBridge = self
+        reloadGameButton.isHidden = true
+        
+        let view = self.view as! SKView
+        view.ignoresSiblingOrder = true
+        view.presentScene(scene)
     }
 
     override var shouldAutorotate: Bool {
@@ -52,4 +48,9 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    @IBAction func reloadGameAction(_ sender: UIButton) {
+        scene.reloadGame()
+    }
+    
 }
