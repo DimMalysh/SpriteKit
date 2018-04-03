@@ -30,6 +30,14 @@
 		04763E852073A5DF007A9F3D /* GameScene_Physics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04763E842073A5DF007A9F3D /* GameScene_Physics.swift */; };
 		04763E872073A974007A9F3D /* engine.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04763E862073A974007A9F3D /* engine.sks */; };
 		04763E892073AD06007A9F3D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04763E882073AD06007A9F3D /* Utils.swift */; };
+		04763E8F2073BB4B007A9F3D /* coin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 04763E8A2073BB4B007A9F3D /* coin.jpg */; };
+		04763E902073BB4B007A9F3D /* Coin0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763E8B2073BB4B007A9F3D /* Coin0.png */; };
+		04763E912073BB4B007A9F3D /* Coin1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763E8C2073BB4B007A9F3D /* Coin1.png */; };
+		04763E922073BB4B007A9F3D /* Coin2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763E8D2073BB4B007A9F3D /* Coin2.png */; };
+		04763E932073BB4B007A9F3D /* Coin3.png in Resources */ = {isa = PBXBuildFile; fileRef = 04763E8E2073BB4B007A9F3D /* Coin3.png */; };
+		04763E952073C93A007A9F3D /* pickCoin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 04763E942073C93A007A9F3D /* pickCoin.mp3 */; };
+		04763E972073C987007A9F3D /* SKTAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04763E962073C987007A9F3D /* SKTAudio.swift */; };
+		04763E9C2073CB64007A9F3D /* AnimationClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04763E9B2073CB64007A9F3D /* AnimationClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +66,14 @@
 		04763E842073A5DF007A9F3D /* GameScene_Physics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene_Physics.swift; sourceTree = "<group>"; };
 		04763E862073A974007A9F3D /* engine.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = engine.sks; sourceTree = "<group>"; };
 		04763E882073AD06007A9F3D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		04763E8A2073BB4B007A9F3D /* coin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = coin.jpg; sourceTree = "<group>"; };
+		04763E8B2073BB4B007A9F3D /* Coin0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Coin0.png; sourceTree = "<group>"; };
+		04763E8C2073BB4B007A9F3D /* Coin1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Coin1.png; sourceTree = "<group>"; };
+		04763E8D2073BB4B007A9F3D /* Coin2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Coin2.png; sourceTree = "<group>"; };
+		04763E8E2073BB4B007A9F3D /* Coin3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Coin3.png; sourceTree = "<group>"; };
+		04763E942073C93A007A9F3D /* pickCoin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickCoin.mp3; sourceTree = "<group>"; };
+		04763E962073C987007A9F3D /* SKTAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTAudio.swift; sourceTree = "<group>"; };
+		04763E9B2073CB64007A9F3D /* AnimationClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationClass.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,9 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				04763E5320737B57007A9F3D /* GameScene.sks */,
-				04763E862073A974007A9F3D /* engine.sks */,
 				04763E5120737B57007A9F3D /* AppDelegate.swift */,
-				04763E882073AD06007A9F3D /* Utils.swift */,
 				04763E5720737B57007A9F3D /* GameScene.swift */,
 				04763E822073A315007A9F3D /* GameScene_Touches.swift */,
 				04763E842073A5DF007A9F3D /* GameScene_Physics.swift */,
@@ -102,6 +116,9 @@
 				04763E5B20737B57007A9F3D /* Main.storyboard */,
 				04763E6020737B57007A9F3D /* LaunchScreen.storyboard */,
 				04763E6320737B57007A9F3D /* Info.plist */,
+				04763E9A2073CA03007A9F3D /* Emitters */,
+				04763E982073C9B5007A9F3D /* Helpers */,
+				04763E992073C9C0007A9F3D /* Sounds */,
 				04763E69207399ED007A9F3D /* scene_atlas */,
 			);
 			path = SpriteKitTest;
@@ -122,8 +139,39 @@
 				04763E7820739A1F007A9F3D /* Run4.png */,
 				04763E7920739A1F007A9F3D /* Run5.png */,
 				04763E7A20739A1F007A9F3D /* Run6.png */,
+				04763E8A2073BB4B007A9F3D /* coin.jpg */,
+				04763E8B2073BB4B007A9F3D /* Coin0.png */,
+				04763E8C2073BB4B007A9F3D /* Coin1.png */,
+				04763E8D2073BB4B007A9F3D /* Coin2.png */,
+				04763E8E2073BB4B007A9F3D /* Coin3.png */,
 			);
 			path = scene_atlas;
+			sourceTree = "<group>";
+		};
+		04763E982073C9B5007A9F3D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				04763E882073AD06007A9F3D /* Utils.swift */,
+				04763E962073C987007A9F3D /* SKTAudio.swift */,
+				04763E9B2073CB64007A9F3D /* AnimationClass.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		04763E992073C9C0007A9F3D /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				04763E942073C93A007A9F3D /* pickCoin.mp3 */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
+		04763E9A2073CA03007A9F3D /* Emitters */ = {
+			isa = PBXGroup;
+			children = (
+				04763E862073A974007A9F3D /* engine.sks */,
+			);
+			name = Emitters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,7 +238,10 @@
 				04763E5D20737B57007A9F3D /* Main.storyboard in Resources */,
 				04763E872073A974007A9F3D /* engine.sks in Resources */,
 				04763E7C20739A1F007A9F3D /* Run1.png in Resources */,
+				04763E922073BB4B007A9F3D /* Coin2.png in Resources */,
+				04763E8F2073BB4B007A9F3D /* coin.jpg in Resources */,
 				04763E7B20739A1F007A9F3D /* Run0.png in Resources */,
+				04763E952073C93A007A9F3D /* pickCoin.mp3 in Resources */,
 				04763E7220739A12007A9F3D /* Fly3.png in Resources */,
 				04763E5420737B57007A9F3D /* GameScene.sks in Resources */,
 				04763E8120739A1F007A9F3D /* Run6.png in Resources */,
@@ -199,10 +250,13 @@
 				04763E6F20739A12007A9F3D /* Fly0.png in Resources */,
 				04763E7020739A12007A9F3D /* Fly1.png in Resources */,
 				04763E5F20737B57007A9F3D /* Assets.xcassets in Resources */,
+				04763E912073BB4B007A9F3D /* Coin1.png in Resources */,
 				04763E7E20739A1F007A9F3D /* Run3.png in Resources */,
 				04763E8020739A1F007A9F3D /* Run5.png in Resources */,
 				04763E7F20739A1F007A9F3D /* Run4.png in Resources */,
 				04763E6220737B57007A9F3D /* LaunchScreen.storyboard in Resources */,
+				04763E932073BB4B007A9F3D /* Coin3.png in Resources */,
+				04763E902073BB4B007A9F3D /* Coin0.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +271,8 @@
 				04763E852073A5DF007A9F3D /* GameScene_Physics.swift in Sources */,
 				04763E5820737B57007A9F3D /* GameScene.swift in Sources */,
 				04763E5A20737B57007A9F3D /* GameViewController.swift in Sources */,
+				04763E972073C987007A9F3D /* SKTAudio.swift in Sources */,
+				04763E9C2073CB64007A9F3D /* AnimationClass.swift in Sources */,
 				04763E5220737B57007A9F3D /* AppDelegate.swift in Sources */,
 				04763E892073AD06007A9F3D /* Utils.swift in Sources */,
 			);
@@ -380,6 +436,7 @@
 				04763E6820737B57007A9F3D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

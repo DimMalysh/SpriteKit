@@ -23,6 +23,26 @@ extension GameScene {
             hero.run(heroRun)
         }
         
+        if contact.bodyA.categoryBitMask == coinGroup || contact.bodyB.categoryBitMask == coinGroup {
+            let coinNode = contact.bodyA.categoryBitMask == coinGroup ? contact.bodyA.node : contact.bodyB.node
+            
+            if isSound == true {
+                run(pickCoinPreload)
+            }
+            
+            coinNode?.removeFromParent()
+        }
+        
+        if contact.bodyA.categoryBitMask == redCoinGroup || contact.bodyB.categoryBitMask == redCoinGroup {
+            let redCoinNode = contact.bodyA.categoryBitMask == redCoinGroup ? contact.bodyA.node : contact.bodyB.node
+            
+            if isSound == true {
+                run(pickCoinPreload)
+            }
+            
+            redCoinNode?.removeFromParent()
+        }
+        
     }
     
 }
