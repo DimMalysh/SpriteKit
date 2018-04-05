@@ -19,6 +19,15 @@ class AnimationClass {
         sprite.run(SKAction.repeatForever(SKAction.sequence([SKAction.colorize(with: SKColor.red, colorBlendFactor: 1.0, duration: duration), SKAction.colorize(withColorBlendFactor: 0.0, duration: duration)])))
     }
     
+    func rotateAnimation(sprite: SKSpriteNode, duration: TimeInterval) {
+        sprite.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.rotate(toAngle: CGFloat(M_PI / 2), duration: duration),
+            SKAction.rotate(toAngle: CGFloat(M_PI), duration: duration),
+            SKAction.rotate(toAngle: CGFloat(-M_PI / 2), duration: duration),
+            SKAction.rotate(toAngle: CGFloat(M_PI), duration: duration)
+        ])))
+    }
+    
     func shakeAndFlashAnimation(view: SKView) {
         //White flash
         let tempView = UIView(frame: view.frame)

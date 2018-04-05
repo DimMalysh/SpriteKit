@@ -7,7 +7,6 @@
 //
 
 import SpriteKit
-import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -16,6 +15,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //Variables
     var isSound = true
+    var isActiveShield = false
     var gameViewControllerBridge: GameViewController!
     var moveElectricGateByY = SKAction()
     
@@ -29,6 +29,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var coinHeroTex: SKTexture!
     var redCoinHeroTex: SKTexture!
     var electricGateTex: SKTexture!
+    var shieldTex: SKTexture!
+    var shieldItemTex: SKTexture!
+    var mineLightTex: SKTexture!
+    var mineHeavyTex: SKTexture!
     
     //Emitters Node
     var heroEmitter = SKEmitterNode()
@@ -41,6 +45,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var coin = SKSpriteNode()
     var redCoin = SKSpriteNode()
     var electricGate = SKSpriteNode()
+    var shield = SKSpriteNode()
+    var shieldItem = SKSpriteNode()
+    var mine = SKSpriteNode()
     
     //Sprite Objects
     var bgObject = SKNode()
@@ -50,6 +57,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var heroEmitterObject = SKNode()
     var coinObject = SKNode()
     var redCoinObject = SKNode()
+    var shieldObject = SKNode()
+    var shieldItemObject = SKNode()
     
     //Bit masks
     var heroGroup: UInt32 = 0x1 << 1
@@ -57,6 +66,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var coinGroup: UInt32 = 0x1 << 3
     var redCoinGroup: UInt32 = 0x1 << 4
     var objectGroup: UInt32 = 0x1 << 5
+    var shieldGroup: UInt32 = 0x1 << 6
     
     //Array of Textures for animateWithTextures
     var heroFlyTexturesArray = [SKTexture]()
@@ -69,11 +79,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timerAddCoin = Timer()
     var timerAddRedCoin = Timer()
     var timerAddElectricGate = Timer()
+    var timerAddShieldItem = Timer()
+    var timerAddMine = Timer()
     
     //Sounds
     var pickCoinPreload = SKAction()
     var electricGateCreatePreload = SKAction()
     var electricGateDeadPreload = SKAction()
+    var shieldOnPreload = SKAction()
+    var shieldOffPreload = SKAction()
     
     override func didMove(to view: SKView) {
         //Backgroung texture
@@ -92,6 +106,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //ElectricGate texture
         electricGateTex = SKTexture(imageNamed: "ElectricGate01.png")
         
+        //Shields textures
+        shieldTex = SKTexture(imageNamed: "shield.png")
+        shieldItemTex = SKTexture(imageNamed: "shieldItem.png")
+        
+        //Mine textures
+        mineLightTex = SKTexture(imageNamed: "mine1.png")
+        mineHeavyTex = SKTexture(imageNamed: "mine2.png")
+        
         //Emitters
         heroEmitter = SKEmitterNode(fileNamed: "engine.sks")!
         
@@ -105,10 +127,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pickCoinPreload = SKAction.playSoundFileNamed("pickCoin.mp3", waitForCompletion: false)
         electricGateCreatePreload = SKAction.playSoundFileNamed("electricCreate.wav", waitForCompletion: false)
         electricGateDeadPreload = SKAction.playSoundFileNamed("electricDead.mp3", waitForCompletion: false)
+        shieldOnPreload = SKAction.playSoundFileNamed("shieldOn.mp3", waitForCompletion: false)
+        shieldOffPreload = SKAction.playSoundFileNamed("shieldOff.mp3", waitForCompletion: false)
     }
     
     override func didFinishUpdate() {
         heroEmitter.position = hero.position - CGPoint(x: 30.0, y: 5.0)
+        shield.position = hero.position + CGPoint(x: 0.0, y: 0.0)
     }
     
     func createObjects() {
@@ -119,6 +144,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(heroEmitterObject)
         self.addChild(coinObject)
         self.addChild(redCoinObject)
+        self.addChild(shieldObject)
+        self.addChild(shieldItemObject)
     }
     
     func createGame() {
@@ -193,7 +220,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         hero.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: hero.size.width - 40, height: hero.size.height - 30))
         hero.physicsBody?.categoryBitMask = heroGroup
-        hero.physicsBody?.contactTestBitMask = groundGroup | coinGroup | redCoinGroup | objectGroup
+        hero.physicsBody?.contactTestBitMask = groundGroup | coinGroup | redCoinGroup | objectGroup | shieldGroup
         hero.physicsBody?.collisionBitMask = groundGroup
         hero.physicsBody?.isDynamic = true
         hero.physicsBody?.allowsRotation = false
@@ -352,14 +379,74 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         movingObject.addChild(electricGate)
     }
     
+    func addMine() {
+        let minesRandom = arc4random() % UInt32(2)
+        let mine = minesRandom == 0 ? SKSpriteNode(texture: mineLightTex) : SKSpriteNode(texture: mineHeavyTex)
+        let mineMoveToX = SKAction.moveTo(x: -self.frame.size.width / 4, duration: 4.0)
+        
+        mine.size.width = 70.0
+        mine.size.height = 62.0
+        mine.position = CGPoint(x: self.frame.size.width + 150, y: self.frame.size.height / 4 - self.frame.size.height / 24)
+        
+        mine.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: mine.size.width - 40, height: mine.size.height - 30))
+        mine.physicsBody?.categoryBitMask = objectGroup
+        mine.physicsBody?.isDynamic = false
+        
+        let removingAction = SKAction.removeFromParent()
+        let mineMoveByBgForever = SKAction.repeatForever(SKAction.sequence([mineMoveToX, removingAction]))
+        
+        animations.rotateAnimation(sprite: mine, duration: 0.2)
+        
+        mine.run(mineMoveByBgForever)
+        mine.zPosition = 1
+        movingObject.addChild(mine)
+    }
+    
+    func addShieldItem() {
+        shieldItem = SKSpriteNode(texture: shieldItemTex)
+        
+        let movementAmount = arc4random() % UInt32(self.frame.height / 2)
+        let pipeOffset = CGFloat(movementAmount) - self.frame.height / 4
+        
+        shieldItem.position = CGPoint(x: self.size.width + 50.0, y: shieldItemTex.size().height + self.size.height / 2 + pipeOffset)
+    
+        shieldItem.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: shieldItem.size.width - 20, height: shieldItem.size.height - 20))
+        shieldItem.physicsBody?.restitution = 0
+        shieldItem.physicsBody?.isDynamic = false
+        shieldItem.physicsBody?.categoryBitMask = shieldGroup
+        shieldItem.zPosition = 1
+        
+        let moveShield = SKAction.moveBy(x: -self.frame.size.width * 2, y: 0.0, duration: 5.0)
+        let removeAction = SKAction.removeFromParent()
+        let shieldItemMoveByBgForever = SKAction.repeatForever(SKAction.sequence([moveShield, removeAction]))
+        
+        animations.scaleZDirection(sprite: shieldItem)
+        shieldItem.setScale(1.1)
+        
+        shieldItem.run(shieldItemMoveByBgForever)
+        shieldItemObject.addChild(shieldItem)
+    }
+    
+    func addShield() {
+        shield = SKSpriteNode(texture: shieldTex)
+        
+        if isSound {
+            run(shieldOnPreload)
+        }
+        
+        shield.zPosition = 1
+        
+        shieldObject.addChild(shield)
+    }
+    
     func startTimers() {
-        timerAddCoin.invalidate()
-        timerAddRedCoin.invalidate()
-        timerAddElectricGate.invalidate()
+        invalidateTimers()
         
         timerAddCoin = Timer.scheduledTimer(timeInterval: 2.64, target: self, selector: #selector(GameScene.addCoin), userInfo: nil, repeats: true)
         timerAddRedCoin = Timer.scheduledTimer(timeInterval: 8.246, target: self, selector: #selector(GameScene.addRedCoin), userInfo: nil, repeats: true)
         timerAddElectricGate = Timer.scheduledTimer(timeInterval: 5.234, target: self, selector: #selector(GameScene.addElectricGate), userInfo: nil, repeats: true)
+        timerAddMine = Timer.scheduledTimer(timeInterval: 4.45, target: self, selector: #selector(GameScene.addMine), userInfo: nil, repeats: true)
+        timerAddShieldItem = Timer.scheduledTimer(timeInterval: 20.2, target: self, selector: #selector(GameScene.addShieldItem), userInfo: nil, repeats: true)
     }
     
     func stopGameObjects() {
@@ -380,6 +467,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         timerAddCoin.invalidate()
         timerAddRedCoin.invalidate()
         timerAddElectricGate.invalidate()
+        timerAddMine.invalidate()
+        timerAddShieldItem.invalidate()
     }
     
     func reloadGame() {

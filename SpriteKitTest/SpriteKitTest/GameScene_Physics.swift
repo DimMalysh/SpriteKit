@@ -16,35 +16,63 @@ extension GameScene {
         if contact.bodyA.categoryBitMask == objectGroup || contact.bodyB.categoryBitMask == objectGroup {
             hero.physicsBody?.velocity = CGVector(dx: 0.0, dy: 0.0)
             
-            animations.shakeAndFlashAnimation(view: self.view!)
+            let objectNode = contact.bodyA.categoryBitMask == objectGroup ? contact.bodyA.node : contact.bodyB.node
             
-            if isSound == true {
-                run(electricGateCreatePreload)
-            }
-            
-            hero.physicsBody?.allowsRotation = false
-            
-            heroEmitterObject.removeAllChildren()
-            coinObject.removeAllChildren()
-            redCoinObject.removeAllChildren()
-            movingObject.removeAllChildren()
-            groundObject.removeAllChildren()
-            movingObject.removeAllChildren()
-            
-            stopGameObjects()
-            invalidateTimers()
-            
-            //Dying hero
-            heroDeathTexturesArray = [SKTexture(imageNamed: "Dead0.png"), SKTexture(imageNamed: "Dead1.png"), SKTexture(imageNamed: "Dead2.png"), SKTexture(imageNamed: "Dead3.png"), SKTexture(imageNamed: "Dead4.png"), SKTexture(imageNamed: "Dead5.png"), SKTexture(imageNamed: "Dead6.png")]
-            let heroDeathAnimation = SKAction.animate(with: heroDeathTexturesArray, timePerFrame: 0.2)
-            hero.run(heroDeathAnimation)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                self.scene?.isPaused = true
-                self.heroObject.removeAllChildren()
+            if !isActiveShield {
+                animations.shakeAndFlashAnimation(view: self.view!)
                 
-                self.gameViewControllerBridge.reloadGameButton.isHidden = false
-            })
+                if isSound == true {
+                    run(electricGateCreatePreload)
+                }
+                
+                hero.physicsBody?.allowsRotation = false
+                
+                heroEmitterObject.removeAllChildren()
+                coinObject.removeAllChildren()
+                redCoinObject.removeAllChildren()
+                movingObject.removeAllChildren()
+                groundObject.removeAllChildren()
+                movingObject.removeAllChildren()
+                shieldObject.removeAllChildren()
+                shieldItemObject.removeAllChildren()
+                
+                stopGameObjects()
+                invalidateTimers()
+                
+                //Dying hero
+                heroDeathTexturesArray = [SKTexture(imageNamed: "Dead0.png"), SKTexture(imageNamed: "Dead1.png"), SKTexture(imageNamed: "Dead2.png"), SKTexture(imageNamed: "Dead3.png"), SKTexture(imageNamed: "Dead4.png"), SKTexture(imageNamed: "Dead5.png"), SKTexture(imageNamed: "Dead6.png")]
+                let heroDeathAnimation = SKAction.animate(with: heroDeathTexturesArray, timePerFrame: 0.2)
+                hero.run(heroDeathAnimation)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    self.scene?.isPaused = true
+                    self.heroObject.removeAllChildren()
+                    
+                    self.gameViewControllerBridge.reloadGameButton.isHidden = false
+                })
+            } else {
+                objectNode?.removeFromParent()
+                shieldObject.removeAllChildren()
+                
+                isActiveShield = !isActiveShield
+                
+                if isSound {
+                    run(shieldOffPreload)
+                }
+            }
+        }
+        
+        if contact.bodyA.categoryBitMask == shieldGroup || contact.bodyB.categoryBitMask == shieldGroup {
+            let shieldNode = contact.bodyA.categoryBitMask == shieldGroup ? contact.bodyA.node : contact.bodyB.node
+            
+            if !isActiveShield {
+                if isSound {
+                    run(pickCoinPreload)
+                }
+                shieldNode?.removeFromParent()
+                addShield()
+                isActiveShield = !isActiveShield
+            }
         }
         
         if contact.bodyA.categoryBitMask == groundGroup || contact.bodyB.categoryBitMask == groundGroup {

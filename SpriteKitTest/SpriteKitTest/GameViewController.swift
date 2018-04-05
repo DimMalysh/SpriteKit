@@ -13,11 +13,15 @@ import GameplayKit
 class GameViewController: UIViewController {
 
     var scene = GameScene(size: CGSize(width: 1024, height: 768))
+    let textureAtlas = SKTextureAtlas(named: "scene.atlas")
     
     @IBOutlet weak var reloadGameButton: UIButton!
+    @IBOutlet weak var loadingView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadingView.isHidden = false
         
         scene.scaleMode = .aspectFill
         scene.gameViewControllerBridge = self
@@ -25,7 +29,13 @@ class GameViewController: UIViewController {
         
         let view = self.view as! SKView
         view.ignoresSiblingOrder = true
-        view.presentScene(scene)
+        
+        textureAtlas.preload {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1), execute: {
+                self.loadingView.isHidden = true
+                view.presentScene(self.scene)
+            })
+        }
     }
 
     override var shouldAutorotate: Bool {
@@ -51,6 +61,7 @@ class GameViewController: UIViewController {
     
     @IBAction func reloadGameAction(_ sender: UIButton) {
         scene.reloadGame()
+        scene.gameViewControllerBridge = self
     }
     
 }
